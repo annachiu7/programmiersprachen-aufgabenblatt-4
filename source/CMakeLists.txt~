@@ -1,0 +1,28 @@
+
+# Build tests
+
+add_executable(beispiel
+  beispiel.cpp)
+
+
+add_executable(aufgabe2bis4
+  aufgabe2bis4.cpp)
+
+add_executable(aufgabe5
+  aufgabe5.cpp
+  circle.cpp
+  vec2.cpp
+  mat2.cpp)
+
+add_executable(swap
+  swap.cpp
+  circle.cpp
+  vec2.cpp
+  mat2.cpp)
+
+add_executable(test
+  test.cpp
+  circle.cpp
+  vec2.cpp
+  mat2.cpp)
+

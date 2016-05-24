@@ -1,0 +1,14 @@
+#define CATCH_CONFIG_RUNNER
+#include <catch.hpp>
+#include "vec2.hpp"
+#include "mat2.hpp"
+#include <cmath>
+#include "circle.hpp"
+#include "rectangle.hpp"
+
+
+
+int main(int argc, char *argv[])
+{
+  return Catch::Session().run(argc, argv);
+}
