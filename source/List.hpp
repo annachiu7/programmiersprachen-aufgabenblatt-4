@@ -46,16 +46,47 @@ struct ListIterator
 	ListIterator(ListNode<T>* n): m_node(n) {} 
 
 	reference operator *() const { return m_node->m_value; } 
-	pointer operator->() const {return &m_node->m_value; } // not implemented yet
+	pointer operator->() const {return &m_node->m_value; } // & refers on the address
 	Self& operator ++() { *this = next(); return *this; } 
-	Self operator ++(int) { Self tmp = *this; operator++(); return tmp; } 
+	Self operator ++(int) 
+	{ 
+		Self tmp = *this; 
+		operator++(); 
+		return tmp; 
+	} 
 	bool operator ==(const Self& x) const { return m_node==x.m_node; } 
 	bool operator !=(const Self& x) const { return m_node!=x.m_node; } 
+	//aufgabe 4.8 insert
+//	Self operator +(int n) const
+//	{
+//		for (int i = 0; i < n; ++i)
+//		{
+//			*this = next();
+//		}
+//		return *this;
+//	}
+//
+//	Self operator -(int n) const
+//	{
+//		for (int i = 0; i < n; ++i)
+//		{
+//			*this = last();
+//		}
+//		return *this;
+//	}
 
 	Self next() const
 	{
 		if( m_node )
 			return ListIterator(m_node->m_next);
+		else
+			return ListIterator(nullptr);
+	}
+
+	Self last() const
+	{
+		if (m_node)
+			return ListIterator(m_node->m_prev);
 		else
 			return ListIterator(nullptr);
 	}
@@ -215,7 +246,25 @@ public :
     	return iterator(m_last);
     }
 
-
+//===== aufgabe 4.8
+    void insert(iterator const& it, T const& new_elem)
+    {
+    	if (it == begin())
+    	{
+    		push_front(new_elem);
+    	}
+    	else if (it == end() )
+    	{
+    		push_back(new_elem);
+    	}
+    	else
+    	{
+    		++m_size;
+    		ListNode<T> * new_node = new ListNode<T> {new_elem, it.m_node->m_prev, it.m_node};
+    		it.m_node->m_prev->m_next = new_node;
+    		it.m_node->m_prev = new_node;
+    	}
+    }
 
 private :
 	std::size_t m_size = 0;

@@ -69,6 +69,21 @@ List<int> list2{list};
 REQUIRE ( list == list2 );
 }
 
+TEST_CASE ( " insert " , " [ insert method ] " )
+{
+List<int> list;
+list.push_front(1);
+list.push_front(2);
+list.push_front(3);
+list.push_front(4);
+auto it = list.begin();
+++it;
+list.insert(it,9);
+auto it2 = list.begin();
+++it2;
+REQUIRE (  *it2  == 9 );
+}
+
 
 int main(int argc, char *argv[])
 {
