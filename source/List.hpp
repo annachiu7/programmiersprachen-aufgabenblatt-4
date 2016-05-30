@@ -19,15 +19,6 @@ struct ListNode
 };
 
 template <typename T>
-struct ListIterator
-{
-	friend class List<T>;
-	// to be implemented
-private:
-	ListNode<T>* m_node = nullptr;
-};
-
-template <typename T>
 struct ListConstIterator
 {
 	friend class List<T>;
@@ -35,6 +26,44 @@ public :
 	// not implemented yet
 private :
 	ListNode<T>* m_node = nullptr;
+};
+
+template <typename T>
+struct ListIterator
+{
+	typedef ListIterator<T> Self;
+
+	typedef T value_type;
+	typedef T * pointer;
+	typedef T & reference;
+	typedef ptrdiff_t difference_type;
+	typedef std::forward_iterator_tag iterator_category;
+
+	friend class List<T>;
+
+	//aufgabe 4.4
+	ListIterator(): m_node(nullptr) {} 
+	ListIterator(ListNode<T>* n): m_node(n) {} 
+
+	reference operator *() const { return m_node->m_value; } 
+	pointer operator->() const {return &m_node->m_value; } // not implemented yet
+	Self& operator ++() { *this = next(); return *this; } 
+	Self operator ++(int) { Self tmp = *this; operator++(); return tmp; } 
+	bool operator ==(const Self& x) const { return m_node==x.m_node; } 
+	bool operator !=(const Self& x) const { return m_node!=x.m_node; } 
+
+	Self next() const
+	{
+		if( m_node )
+			return ListIterator(m_node->m_next);
+		else
+			return ListIterator(nullptr);
+	}
+
+
+private :
+	// The Node the iterator is pointing to
+	ListNode <T>* m_node = nullptr;
 };
 
 template <typename T>
@@ -60,7 +89,17 @@ public :
 	{
 		return m_size;
 	}
-	List() : m_size(0), m_first(nullptr), m_last(nullptr) {}
+	List() : m_size{0}, m_first{nullptr}, m_last{nullptr} {}
+
+//===== aufgabe 4.7
+	List(List const& x) : m_size{0}, m_first{nullptr}, m_last{nullptr}
+	{
+		for (iterator it = x.begin(); it != x.end(); ++it)
+		{
+			push_back(*it);
+		}
+		push_back(*x.end());
+	}
 
 //===== aufgabe 4.2
 	void push_front(T const& element)
@@ -165,6 +204,17 @@ public :
     		pop_back();
     	}
     }
+//===== aufgabe 4.5
+    iterator begin() const
+    {
+    	return iterator(m_first);
+    }
+
+    iterator end() const
+    {
+    	return iterator(m_last);
+    }
+
 
 
 private :
@@ -174,6 +224,34 @@ private :
 };
 
 
+//===== aufgabe 4.6
+template < typename T >
+bool operator ==( List <T> const & xs , List <T> const & ys )
+{
+	typedef ListIterator <T> iterator;
+
+	if (xs.size()!= ys.size())
+	{
+		return false;
+	}
+	
+	iterator itx = xs.begin();
+	iterator ity = ys.begin();
+
+	for (unsigned int i = 0; i < xs.size(); ++i)
+	{
+		if (*itx != *ity)	{ return false;	}
+		++itx;
+		++ity;
+	}
+	return true;
+}
+
+template < typename T >
+bool operator !=( List <T> const & xs , List <T> const & ys )
+{
+	return !(xs == ys);
+}
 
 
 
