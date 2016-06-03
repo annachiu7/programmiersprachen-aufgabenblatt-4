@@ -112,34 +112,43 @@ public :
 	friend class ListIterator <T>;
 	friend class ListConstIterator <T>;
 
-//===== aufgabe 4.11   Tiefer Zuweisungsoperator
-	List& operator=(List l_new_value)
-	{
-		std::swap(m_first, l_new_value.m_first);
-		std::swap(m_last, l_new_value.m_last);
-		std::swap(m_size, l_new_value.m_size); 
-		return *this;
-	}
-	
-
 //===== aufgabe 4.1
 	bool empty() const
 	{
 		return m_size == 0;
 	}
+	
 	std::size_t size() const 
 	{
 		return m_size;
 	}
+	// default constructor
 	List() : m_size{0}, m_first{nullptr}, m_last{nullptr} {}
 
-//===== aufgabe 4.7
+//===== aufgabe 4.7    copy constructor
 	List(List const& x) : m_size{0}, m_first{nullptr}, m_last{nullptr}
 	{
 		for (iterator it = x.begin(); it != x.end(); ++it)
 		{
 			push_back(*it);
 		}
+	}
+
+//===== aufgabe 4.11   Tiefer Zuweisungsoperator
+	List& operator=(List l_new_value)
+	{
+		std::swap(m_first, l_new_value.m_first);   // swap pointers
+		std::swap(m_last, l_new_value.m_last);
+		std::swap(m_size, l_new_value.m_size);    // swap member value
+		return *this;
+	}
+
+//===== aufgabe 4.12    move constructor
+	List(List&& l_new_value) : m_size{l_new_value.m_size}, m_first{l_new_value.m_first}, m_last{l_new_value.m_last}
+	{
+		l_new_value.m_size = 0;
+		l_new_value.m_first = nullptr;
+		l_new_value.m_last = nullptr;
 	}
 
 //===== aufgabe 4.2

@@ -116,7 +116,7 @@ TEST_CASE("4.10 copy" , "[std copy]")
 	REQUIRE(v[0] == 1);
 }
 
-TEST_CASE("4.11 operator" , "[zuweisungsoperator]")
+TEST_CASE("4.11 operator" , "[copy assignment]")
 {
 	List<int> list;
 	list.push_back(1);
@@ -129,6 +129,19 @@ TEST_CASE("4.11 operator" , "[zuweisungsoperator]")
 	list2.push_front(7);
 	list2 = list;
 	REQUIRE(list == list2);
+}
+
+TEST_CASE ( " move constructor " , " [ constructor ] " )
+{
+	List<int> list ;
+	list.push_front(1);
+	list.push_front(2);
+	list.push_front(3);
+	list.push_front(4);
+	List<int> list2(std::move(list));
+	REQUIRE(0 == list.size());
+	REQUIRE(list.empty());
+	REQUIRE(4 == list2.size());
 }
 
 
