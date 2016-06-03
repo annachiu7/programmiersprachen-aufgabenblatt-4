@@ -2,6 +2,7 @@
 #define BUW_LIST_HPP
 #include <cstddef>
 #include "assert.h"
+#include <utility>
 
 template <typename T>
 struct List;
@@ -111,6 +112,16 @@ public :
 	friend class ListIterator <T>;
 	friend class ListConstIterator <T>;
 
+//===== aufgabe 4.11   Tiefer Zuweisungsoperator
+	List& operator=(List l_new_value)
+	{
+		std::swap(m_first, l_new_value.m_first);
+		std::swap(m_last, l_new_value.m_last);
+		std::swap(m_size, l_new_value.m_size); 
+		return *this;
+	}
+	
+
 //===== aufgabe 4.1
 	bool empty() const
 	{
@@ -129,7 +140,6 @@ public :
 		{
 			push_back(*it);
 		}
-		push_back(*x.end());
 	}
 
 //===== aufgabe 4.2
@@ -243,7 +253,7 @@ public :
 
     iterator end() const
     {
-    	return iterator(m_last);
+    	return iterator();
     }
 
 //===== aufgabe 4.8
@@ -254,7 +264,7 @@ public :
     		push_front(new_elem);
     	}
     	else if (it == end() )
-    	{
+    	{	
     		push_back(new_elem);
     	}
     	else
@@ -263,6 +273,23 @@ public :
     		ListNode<T> * new_node = new ListNode<T> {new_elem, it.m_node->m_prev, it.m_node};
     		it.m_node->m_prev->m_next = new_node;
     		it.m_node->m_prev = new_node;
+    	}
+    }
+
+//===== aufgabe 4.9
+    void reverse ()
+    {
+    	unsigned int s = m_size;
+    	iterator it = begin();
+    	++it;
+    	while (it!=end())
+    	{
+    		push_front(*it);
+    		++it;
+    	}
+    	for (unsigned int i = 1; i < s; ++i)
+    	{
+    		pop_back();
     	}
     }
 
@@ -301,7 +328,19 @@ bool operator !=( List <T> const & xs , List <T> const & ys )
 {
 	return !(xs == ys);
 }
-
+//===== aufgabe 4.9
+template <typename T>
+List<T> reverse(List<T> const& list)
+{
+	ListIterator<T> it = list.begin();
+	List<T> newlist;
+	while (it!=list.end())
+	{
+		newlist.push_front(*it);
+		++it;
+	}
+	return newlist;
+}
 
 
 # endif // # define BUW_LIST_HPP

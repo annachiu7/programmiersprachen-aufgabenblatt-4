@@ -55,7 +55,6 @@ TEST_CASE ("provide access to the first element with begin/end " , " [ iterators
 List<int> list ;
 list.push_front(42);
 REQUIRE(42 == *list.begin());
-REQUIRE(42 == *list.end());
 }
 
 TEST_CASE ( " copy constructor " , " [ constructor ] " )
@@ -82,6 +81,54 @@ list.insert(it,9);
 auto it2 = list.begin();
 ++it2;
 REQUIRE (  *it2  == 9 );
+}
+
+TEST_CASE("reverse" , "[reverse method and function]")
+{
+	List<int> list;
+	list.push_front(1);
+	list.push_front(2);
+	list.push_front(3);
+	List<int> list_r;
+	list_r.push_front(3);
+	list_r.push_front(2);
+	list_r.push_front(1);
+	list.reverse();
+	REQUIRE(list == list_r);
+
+	List<int> list2;
+	list2.push_front(1);
+	list2.push_front(2);
+	list2.push_front(3);
+	List<int> list2_r = reverse(list2);
+	REQUIRE(list_r == list2_r);
+}
+
+TEST_CASE("4.10 copy" , "[std copy]")
+{
+	List<int> l;
+	l.push_back(1);
+	l.push_back(2);
+	l.push_back(3);
+	l.push_back(4);
+	std::vector<int> v(4);
+	std::copy(l.begin(),l.end(),v.begin());
+	REQUIRE(v[0] == 1);
+}
+
+TEST_CASE("4.11 operator" , "[zuweisungsoperator]")
+{
+	List<int> list;
+	list.push_back(1);
+	list.push_back(2);
+	list.push_back(3);
+	list.push_back(4);
+	List<int> list2;
+	list2.push_front(5);
+	list2.push_front(6);
+	list2.push_front(7);
+	list2 = list;
+	REQUIRE(list == list2);
 }
 
 
